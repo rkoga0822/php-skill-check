@@ -29,7 +29,8 @@ class BookController
         // TODO: ここを実装する（下の仮表示を本実装に置き換える）
         //   $categories = Category::all();
         //   view('books/create', ['categories' => $categories, 'errors' => [], 'old' => []]);
-        view('books/create'); // 仮表示（実装前の白画面防止。実装時に上記へ置き換える）
+        $categories = Category::all();
+        view('books/create',['categories' => $categories,'errors' => [], 'old'=>[]]); // 仮表示（実装前の白画面防止。実装時に上記へ置き換える）
     }
 
     /**
@@ -43,6 +44,54 @@ class BookController
     public function store(): void
     {
         // TODO: ここを実装する
+        $categories = Category::all();
+        $categoryId = array_map('intval',array_column($categories,'id'));
+        $old = [
+            'title' => trim($_POST['title'] ?? ''),
+            'author' => trim($_POST['author'] ?? ''),
+            'category_id' => trim($_POST['category_id'] ?? ''),
+            'price' => trim($_POST['price'] ?? ''),
+        ];
+        $errors = [];
+
+        if($old['title'] === ''){
+            $errors['title'] = 'タイトルを入力してください';
+        }elseif(mb_strlen($old['title'])>100){
+            $errors['title'] = 'タイトルは１００文字以内で入力してください';
+        }
+
+        if($old['author'] === ''){
+            $errors['author'] = '著者を入力してください';
+        }
+
+        if($old['category_id'] === ''){
+            $errors['category_id'] = 'カテゴリを選択してください';
+        }
+
+        if($old['price'] === ''){
+            $errors['price'] = '価格を入力してください';
+        }elseif(!ctype_digit($old['price'])){
+            $errors['price'] = '価格は０以上の数値で入力してください';
+        }
+
+        if($errors !== []){
+            view('books/create',[
+                'categories' => $categories,
+                'errors' => $errors,
+                'old' => $old,
+            ]);
+            return;
+        }
+
+        Book::create([
+            'title' => $old['title'],
+            'author' => $old['author'],
+            'category_id' => $old['category_id'],
+            'price' => $old['price'],
+        ]);
+
+        header('Location: /?page=index&created=1');
+        exit;
     }
 
     /** ★応用課題: 編集フォームの表示（?page=edit&id=...） */
