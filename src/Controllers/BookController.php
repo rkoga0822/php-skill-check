@@ -17,12 +17,16 @@ class BookController
 
     public function create(): void
     {
+        require_login();
+
         $categories = Category::all();
         view('books/create', ['categories' => $categories, 'errors' => [], 'old' => []]);
     }
 
     public function store(): void
     {
+        require_login();
+
         $categories = Category::all();
         $categoryIds = array_map('intval', array_column($categories, 'id'));
         $old = [
@@ -55,6 +59,8 @@ class BookController
 
     public function edit(): void
     {
+        require_login();
+
         $id = $_GET['id'] ?? '';
 
         //idが数字じゃないなら
@@ -83,6 +89,8 @@ class BookController
 
     public function update(): void
     {
+        require_login();
+
         $id = $_POST['id'] ?? '';
 
         if (!ctype_digit($id)) {
@@ -134,6 +142,8 @@ class BookController
 
     public function delete(): void
     {
+        require_login();
+        
         $id = $_POST['id'] ?? '';
 
         if (!ctype_digit($id)) {

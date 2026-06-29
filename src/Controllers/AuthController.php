@@ -44,4 +44,51 @@ class AuthController
         header('Location: /?page=login&registered=1');
         exit;
     }
+
+    public function login(): void
+    {
+        view('auth/login',['errors' => [],'old' => []]);
+    }
+
+    public function authenticate(): void
+    {
+        $old = [
+            'email' => trim($_POST['email'] ?? ''),
+        ];
+        $password = $_POST['password'] ?? '';
+        $errors = [];
+
+        if($old['email'] === ''){
+            $errors['email'] = 'メールアドレスを入力してください';
+        }
+
+        if($old['password'] === ''){
+            $errors['password'] = 'パスワードを入力してください';
+        }
+
+        $user = $old['email'] !== '' ? User::findByEmail($old['email']) : null;
+        if($errors === [] && ($user === null || !password_verify($password,$user['password']))){
+            $errors['login'] = 'メールアドレスまたはパスワードが正しくありません';
+        }
+
+        if($errors !== []){
+            view('auth/login',['errors' => $errors,'old' => $old]);
+            return;
+        }
+
+        session_regenerate_id(true);
+        $_SESSION['user_id'] = $user['id'];
+        header('Location: /');
+        exit;
+    }
+
+    public function logout(): void
+    {
+        $_SESSION = [];
+        session_destroy();
+
+        header('Location: /?page=login&logged_out=1');
+        exit;
+    }
+    
 }

@@ -51,15 +51,15 @@ switch ($page) {
     case 'register_store':
         $authController->store();
         break;
-    // case 'login':
-    //     $authController->login();
-    //     break;
-    // case 'authenticate':
-    //     $authController->authenticate();
-    //     break;
-    // case 'logout':
-    //     $authController->logout();
-    //     break;
+    case 'login':
+        $authController->login();
+        break;
+    case 'authenticate':
+        $authController->authenticate();
+        break;
+    case 'logout':
+        $authController->logout();
+        break;
     // ▲▲▲ ここまで ▲▲▲
 
     default:
