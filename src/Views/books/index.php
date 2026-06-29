@@ -4,6 +4,13 @@
 <?php if (!empty($_GET['created'])): ?>
   <p class="flash">書籍を登録しました。</p>
 <?php endif; ?>
+<?php if (!empty($_GET['updated'])): ?>
+  <p class="flash">書籍を更新しました。</p>
+<?php endif; ?>
+<?php if (!empty($_GET['deleted'])): ?>
+  <p class="flash">書籍を削除しました。</p>
+<?php endif; ?>
+
 
 <h2>書籍一覧（<?= count($books) ?> 件）</h2>
 
