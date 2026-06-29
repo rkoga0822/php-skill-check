@@ -203,5 +203,23 @@ class BookController
     public function delete(): void
     {
         // TODO: ここを実装する
+        $id = $_POST['id'] ?? '';
+
+        if(!ctype_digit($id)){
+            http_response_code(404);
+            echo 'Book Not Found';
+            return;
+        }
+
+        $book = Book::find((int) $id);
+
+        if($book === null){
+            http_response_code(404);
+            echo 'Book Not Found';
+            return;
+        }
+
+        Book::delete((int) $id);
+        header('Location: /?page=index&deleted=1');
     }
 }

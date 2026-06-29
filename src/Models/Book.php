@@ -79,5 +79,7 @@ class Book
     public static function delete(int $id): void
     {
         // TODO: ここを実装する
+        $stmt = db()->prepare('delete from books where id = ?');
+        $stmt -> execute([$id]);
     }
 }

@@ -22,20 +22,11 @@
         <td><?= e($book['category_name']) ?></td>
         <td>¥<?= number_format((int) $book['price']) ?></td>
         <td>
-          <a href="/?page=edit&id=<?= e($book['id']) ?>">編集</a>
-          <!--
-            ★応用課題: 編集・削除を実装したら、下記を有効化してください。
-            （edit()/update()/delete() を実装する前に置くと操作後に白画面になるため、
-              最初はコメントアウトしています。実装後にこのコメントを外して使ってください）
-
-            <a class="btn" href="/?page=edit&id=（ここに書籍のid）">編集</a>
-            <form method="post" action="/?page=delete" style="display:inline"
-                  onsubmit="return confirm('削除しますか？');">
-              <input type="hidden" name="id" value="（ここに書籍のid）">
-              <button type="submit">削除</button>
-            </form>
-          -->
-          <span class="muted">—</span>
+          <a class="btn" href="/?page=edit&id=<?= e($book['id']) ?>">編集</a>
+          <form action="/?page=delete" method="post" onsubmit="return confirm('削除しますか？');">
+            <input type="hidden" name="id" value="<?= e($book['id']) ?>">
+            <button type="submit">削除</button>
+          </form>
         </td>
       </tr>
     <?php endforeach; ?>
