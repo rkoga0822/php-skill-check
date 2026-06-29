@@ -6,6 +6,7 @@
  * （「オブジェクト指向を学ぼう」で扱った namespace + オートローディングの最小版。
  *   composer がある場合は `composer dump-autoload` でも可。）
  */
+session_start();
 spl_autoload_register(function (string $class): void {
     $prefix = 'App\\';
     if (strncmp($class, $prefix, strlen($prefix)) !== 0) {
@@ -37,4 +38,19 @@ function view(string $name, array $data = [], string $title = '書籍管理'): v
 function e(?string $value): string
 {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+}
+
+// ログイン中かどうか判断
+function is_logged_in(): bool
+{
+    return isset($_SESSION['user_id']);
+}
+
+//　未ログインならログイン画面に移動させる
+function require_login(): void
+{
+    if(!is_logged_in()){
+        header('Location: /?page=login');
+        exit;
+    }
 }
